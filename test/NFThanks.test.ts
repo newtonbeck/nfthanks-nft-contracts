@@ -46,4 +46,28 @@ describe("NFThanks", function () {
     });
   });
 
+  describe("approve", () => {
+    it("it should not allow accounts to approve other accounts to use their NFTs", async () => {
+      const [_, alice, bob] = await ethers.getSigners();
+
+      const factory = await ethers.getContractFactory("NFThanks");
+      const contract = await factory.deploy();
+      await contract.deployed();
+
+      // The contract owner mints a NFT to Alice
+      await contract.safeMint(
+        alice.address, 
+        "ipfs://Qmdfq7EyShQn5ArMphtSfYt5YRkB2G4f2raP1gLfz1kW8Z"
+      );
+
+      // Alice attempts to approve Bob to "use" her NFT
+      await expect(
+        contract.connect(alice).approve(
+          bob.address,
+          0
+        )
+      ).to.be.revertedWithCustomError(contract, "NonApprovableNFT");
+    });
+  });
+
 });

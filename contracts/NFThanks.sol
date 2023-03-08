@@ -16,6 +16,10 @@ contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
     /// to transfer a non-transferrable NFT
     error NonTransferableNFT(address from, address to, uint256 tokenId);
 
+    /// Error thrown when an account attempts
+    /// to approve a non-approvable NFT
+    error NonApprovableNFT(address to, uint256 tokenId);
+
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("NFThanks", "NFTH") {}
@@ -27,7 +31,7 @@ contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
         _setTokenURI(tokenId, uri);
     }
 
-    // The following functions are overrides required by Solidity.
+    // The following overrided functions prevent accounts to transfer/approve their NFTs
 
     function _transfer(
         address from,
@@ -37,6 +41,11 @@ contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
         revert NonTransferableNFT(from, to, tokenId);
     }
 
+    function _approve(address to, uint256 tokenId) internal pure override(ERC721) {
+        revert NonApprovableNFT(to, tokenId);
+    }
+
+    // The following functions are overrides required by Solidity.
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
         internal
