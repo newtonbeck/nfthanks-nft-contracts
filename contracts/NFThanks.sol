@@ -12,6 +12,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable {
     using Counters for Counters.Counter;
 
+    /// Error thrown when an account attempts
+    /// to transfer a non-transferrable NFT
+    error NonTransferableNFT(address from, address to, uint256 tokenId);
+
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("NFThanks", "NFTH") {}
@@ -24,6 +28,15 @@ contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
     }
 
     // The following functions are overrides required by Solidity.
+
+    function _transfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal pure override(ERC721) {
+        revert NonTransferableNFT(from, to, tokenId);
+    }
+
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
         internal
