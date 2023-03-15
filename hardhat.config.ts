@@ -1,5 +1,6 @@
 import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
+import "@nomiclabs/hardhat-etherscan";
 import { deploy } from "./tasks/deploy";
 import { mint } from "./tasks/mint";
 import "dotenv/config";
@@ -28,6 +29,9 @@ const config: HardhatUserConfig = {
       url: process.env.MUMBAI_ALCHEMY_NODE_URL_WITH_API_KEY,
       accounts: [process.env.MUMBAI_SIGNER_PRIVATE_KEY || ""]
     }
+  },
+  etherscan: {
+    apiKey: process.env.POLYGONSCAN_API_KEY
   }
 };
 
