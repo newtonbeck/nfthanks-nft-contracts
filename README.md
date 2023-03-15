@@ -28,3 +28,11 @@ npx hardhat compile
 ```
 npx hardhat test
 ```
+
+## Usage
+
+### Deployment
+
+```
+npx hardhat deploy --network=<network>
+```
