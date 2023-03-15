@@ -21,7 +21,7 @@ describe("NFThanks", function () {
     });
   });
 
-  describe("transfer", () => {
+  describe("transferFrom", () => {
     it("it should not allow accounts to transfer their NFTs", async () => {
       const [_, alice, bob] = await ethers.getSigners();
 
@@ -41,6 +41,57 @@ describe("NFThanks", function () {
           alice.address,
           bob.address,
           0
+        )
+      ).to.be.revertedWithCustomError(contract, "NonTransferableNFT");
+    });
+  });
+
+  describe("safeTransferFrom(address,address,uint256)", () => {
+    it("it should not allow accounts to transfer their NFTs", async () => {
+      const [_, alice, bob] = await ethers.getSigners();
+
+      const factory = await ethers.getContractFactory("NFThanks");
+      const contract = await factory.deploy();
+      await contract.deployed();
+
+      // The contract owner mints a NFT to Alice
+      await contract.safeMint(
+        alice.address, 
+        "ipfs://Qmdfq7EyShQn5ArMphtSfYt5YRkB2G4f2raP1gLfz1kW8Z"
+      );
+
+      // Alice attempts to transfer her NFT to Bob
+      await expect(
+        contract.connect(alice)["safeTransferFrom(address,address,uint256)"](
+          alice.address,
+          bob.address,
+          0
+        )
+      ).to.be.revertedWithCustomError(contract, "NonTransferableNFT");
+    });
+  });
+
+  describe("safeTransferFrom(address,address,uint256,bytes)", () => {
+    it("it should not allow accounts to transfer their NFTs", async () => {
+      const [_, alice, bob] = await ethers.getSigners();
+
+      const factory = await ethers.getContractFactory("NFThanks");
+      const contract = await factory.deploy();
+      await contract.deployed();
+
+      // The contract owner mints a NFT to Alice
+      await contract.safeMint(
+        alice.address, 
+        "ipfs://Qmdfq7EyShQn5ArMphtSfYt5YRkB2G4f2raP1gLfz1kW8Z"
+      );
+
+      // Alice attempts to transfer her NFT to Bob
+      await expect(
+        contract.connect(alice)["safeTransferFrom(address,address,uint256,bytes)"](
+          alice.address,
+          bob.address,
+          0,
+          []
         )
       ).to.be.revertedWithCustomError(contract, "NonTransferableNFT");
     });
@@ -68,6 +119,8 @@ describe("NFThanks", function () {
         )
       ).to.be.revertedWithCustomError(contract, "NonApprovableNFT");
     });
+
+    // TODO Prevent approvalFromAll
   });
 
 });
