@@ -20,6 +20,10 @@ contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
     /// to approve a non-approvable NFT
     error NonApprovableNFT(address to, uint256 tokenId);
 
+    /// Error thrown when an account attempts
+    /// to approve a non-approvable NFT for all
+    error NonApprovableForAllNFT(address to, bool approved);
+
     Counters.Counter private _tokenIdCounter;
 
     constructor() ERC721("NFThanks", "NFTH") {}
@@ -43,6 +47,14 @@ contract NFThanks is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable,
 
     function _approve(address to, uint256 tokenId) internal pure override(ERC721) {
         revert NonApprovableNFT(to, tokenId);
+    }
+
+    function _setApprovalForAll(
+        address owner,
+        address operator,
+        bool approved
+    ) internal pure override(ERC721) {
+        revert NonApprovableForAllNFT(operator, approved);
     }
 
     // The following functions are overrides required by Solidity.
