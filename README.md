@@ -34,7 +34,7 @@ npx hardhat test
 ### Deployment
 
 ```
-npx hardhat deploy --network=<network>
+npx hardhat deploy --network <network>
 ```
 
 ### Minting
@@ -43,5 +43,6 @@ npx hardhat deploy --network=<network>
 npx hardhat mint \
     --contract-address "CONTRACT_ADDRESS" \
     --to-address "TO_ADDRESS" \
-    --ipfs-cid "IPFS_CID"
+    --ipfs-cid "IPFS_CID" \
+    --network <network>
 ```
