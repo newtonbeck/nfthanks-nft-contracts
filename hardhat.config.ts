@@ -2,6 +2,7 @@ import { HardhatUserConfig, task } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import { deploy } from "./tasks/deploy";
 import { mint } from "./tasks/mint";
+import "dotenv/config";
 
 task("deploy")
   .setDescription("Deploys the contract to the blockchain")
@@ -22,6 +23,12 @@ const config: HardhatUserConfig = {
       },
     },
   },
+  networks: {
+    mumbai: {
+      url: process.env.MUMBAI_ALCHEMY_NODE_URL_WITH_API_KEY,
+      accounts: [process.env.MUMBAI_SIGNER_PRIVATE_KEY || ""]
+    }
+  }
 };
 
 export default config;
