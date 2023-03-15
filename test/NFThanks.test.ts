@@ -21,6 +21,24 @@ describe("NFThanks", function () {
     });
   });
 
+  describe("mint", () => {
+    it("it should emit Transfer event", async () => {
+      const [_, alice] = await ethers.getSigners();
+
+      const factory = await ethers.getContractFactory("NFThanks");
+      const contract = await factory.deploy();
+      await contract.deployed();
+
+      // The contract owner mints a NFT to Alice
+      await expect(contract.safeMint(
+        alice.address, 
+        "ipfs://Qmdfq7EyShQn5ArMphtSfYt5YRkB2G4f2raP1gLfz1kW8Z"
+      )).to
+        .emit(contract, "Transfer")
+        .withArgs("0x0000000000000000000000000000000000000000", alice.address, 0);
+    });
+  });
+
   describe("NFT transfer", () => {
     describe("transferFrom", () => {
       it("it should revert with a NonTransferableNFT error", async () => {
