@@ -36,3 +36,12 @@ npx hardhat test
 ```
 npx hardhat deploy --network=<network>
 ```
+
+### Minting
+
+```
+npx hardhat mint \
+    --contract-address "CONTRACT_ADDRESS" \
+    --to-address "TO_ADDRESS" \
+    --ipfs-cid "IPFS_CID"
+```
