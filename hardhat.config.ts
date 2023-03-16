@@ -28,6 +28,10 @@ const config: HardhatUserConfig = {
     mumbai: {
       url: process.env.MUMBAI_ALCHEMY_NODE_URL_WITH_API_KEY,
       accounts: [process.env.MUMBAI_SIGNER_PRIVATE_KEY || ""]
+    },
+    polygon: {
+      url: process.env.POLYGON_ALCHEMY_NODE_URL_WITH_API_KEY,
+      accounts: [process.env.POLYGON_SIGNER_PRIVATE_KEY || ""]
     }
   },
   etherscan: {
